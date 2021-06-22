@@ -2,13 +2,13 @@ from django.contrib.auth import get_user_model, authenticate  # нашего ю�
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-User = get_user_model()
+CustomUser = get_user_model()
 
 class RegisterApiSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(min_length=8, write_only=True, required=True)
 
     class Meta:
-        model = User
+        model = CustomUser
         fields = ('email', 'password', 'password2')
 
 
@@ -23,7 +23,7 @@ class RegisterApiSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
-        user = User.objects.create_user(**validated_data)
+        user = CustomUser.objects.create_user(**validated_data)
         return user
 
 class LoginSerializer(TokenObtainPairSerializer):
@@ -32,7 +32,7 @@ class LoginSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         email = attrs.get('email')
         password = attrs.pop('password', None)
-        if not User.objects.filter(email=email).exists():
+        if not CustomUser.objects.filter(email=email).exists():
             raise serializers.ValidationError('User does not found')
         user = authenticate(username=email, password=password)
         if user and user.is_active:
@@ -40,3 +40,42 @@ class LoginSerializer(TokenObtainPairSerializer):
             attrs['refresh'] = str(refresh)
             attrs['access'] = str(refresh.access_token)
         return attrs
+
+
+# class CreateNewPasswordSerializer(serializers.Serializer):
+#     email = serializers.CharField(max_length=150, required=True)
+#     activation_code = serializers.CharField(max_length=6, min_length=6, required=True)
+#     password = serializers.CharField(min_length=8, required=True)
+#     password_confirm = serializers.CharField(min_length=8, required=True)
+#
+#     def validate_email(self, email):
+#         if not CustomUser.objects.filter(email=email).exists():
+#             raise serializers.ValidationError('Email is not defined')
+#         return email
+#
+#     def validate_activation_code(self, code):
+#         if not CustomUser.objects.filter(activation_code=code, is_active=False).exists():
+#             raise serializers.ValidationError('Incorrect activation code')
+#         return code
+#
+#     def validate(self, attrs):
+#         password = attrs.get('password')
+#         password2 = attrs.get('password2')
+#         if password != password2:
+#             raise serializers.ValidationError('Password it is not match')
+#         return attrs
+#
+#     def save(self, **kwargs):
+#         data = self.validated_data
+#         email = data.get('email')
+#         code = data.get('activation_code')
+#         password = data.get('password')
+#         try:
+#             user = CustomUser.objects.get(email=email, activation_code=code, is_active=False)
+#         except CustomUser.DoesNotExist:
+#             raise serializers.ValidationError('User is not found')
+#         user.is_active = True
+#         user.activation_code = ''
+#         user.set_password(password)
+#         user.save()
+#         return user

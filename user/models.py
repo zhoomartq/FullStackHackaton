@@ -49,7 +49,7 @@ class CustomUser(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
-    def str(self):
+    def __str__(self):
         return self.email
 
     def create_activation_code(self):
@@ -63,4 +63,5 @@ class CustomUser(AbstractUser):
         self.is_active = True
         self.activation_code = ''
         self.save(update_fields=['is_active', 'activation_code'])
+
 
