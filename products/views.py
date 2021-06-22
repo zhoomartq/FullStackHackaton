@@ -1,6 +1,7 @@
 from rest_framework import generics, permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
+from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Q
 from rest_framework.response import Response
 
@@ -19,6 +20,8 @@ class ProductListView(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = serializers.ProductSerializer
     pagination_class = StandardResultsSetPagination
+    filter_backends = [DjangoFilterBackend]
+    filter_fields = ('title', 'price', 'date')
 
     @action(detail=True, methods=['post'])
     def favorite(self, request, pk=None):
