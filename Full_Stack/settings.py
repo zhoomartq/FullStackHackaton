@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_filters',
 
-    'user'
+    'user',
+    'products',
 ]
 
 MIDDLEWARE = [
@@ -175,4 +176,3 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=60),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
-
