@@ -35,6 +35,7 @@ __pycache__/
 .idea/
 .vscode/
 images/
+media/
 # Distribution / packaging
 .Python
 venv/
