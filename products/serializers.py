@@ -26,7 +26,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         request = self.context.get('request')
-        user = request.user.profile_customer
+        user = request.user
         review = Comment.objects.create(user=user, **validated_data)
         return review
 
@@ -39,7 +39,6 @@ class FavoriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Favorite
         fields = '__all__'
-
 
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:
