@@ -1,12 +1,22 @@
 from rest_framework import serializers
 
-from products.models import Product, Comment, Favorite
+from products.models import Product, Comment, Favorite, Like
 
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = '__all__'
+        fields = ('title', 'description', 'price', 'image', 'date', 'likes', )
+
+    def to_representation(self, instance):
+        representation = super(ProductSerializer, self).to_representation(instance)
+        action = self.context.get('action')
+        likes = LikeSerializer(instance.likes.filter(like=True), many=True).data
+        if action == 'list':
+            representation['likes'] = len(likes)
+        if action == 'retrieve':
+            representation['likes'] = likes
+        return representation
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -29,3 +39,14 @@ class FavoriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Favorite
         fields = '__all__'
+
+
+class LikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Like
+        fields = ('owner',)
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['owner'] = instance.owner.email
+        return representation

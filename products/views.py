@@ -6,7 +6,7 @@ from django.db.models import Q
 from rest_framework.response import Response
 
 from products import serializers
-from products.models import Product, Favorite, Comment
+from products.models import Product, Favorite, Comment, Like
 from products.serializers import CommentSerializer, FavoriteSerializer
 
 
@@ -32,6 +32,16 @@ class ProductListView(generics.ListAPIView):
             obj.save()
         added_removed = 'added' if obj.favorite else 'removed'
         return Response('Successfully {} favorite'.format(added_removed), status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['post'])
+    def like(self, request, pk=None):
+        product = self.get_object()
+        obj, created = Like.objects.get_or_create(owner=request.user.CustomUser, product=product)
+        if not created:
+            obj.like = not obj.like
+            obj.save()
+        liked_or_unliked = 'liked' if obj.like else 'unliked'
+        return Response('Successfully {} product'.format(liked_or_unliked), status=status.HTTP_200_OK)
 
 
 class ProductCreateView(generics.CreateAPIView):
