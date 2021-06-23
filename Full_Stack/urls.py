@@ -7,6 +7,7 @@ from drf_yasg import openapi
 from rest_framework import permissions
 from rest_framework.routers import DefaultRouter
 
+from cart.views import CartViewSet
 from products.views import CommentViewSet
 
 schema_view = get_schema_view(
@@ -24,12 +25,12 @@ schema_view = get_schema_view(
 
 router = DefaultRouter()
 router.register('comment', CommentViewSet)
-
+router.register('cart', CartViewSet)
 
 urlpatterns = [
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('admin/', admin.site.urls),
     path('api/v1/docs/', schema_view.with_ui()),
     path('api/v1/products/', include('products.urls')),
