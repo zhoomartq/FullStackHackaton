@@ -13,6 +13,7 @@ class Product(models.Model):
     def __str__(self):
         return self.title
 
+
 class Comment(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='comments')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='comments')
@@ -24,8 +25,7 @@ class Comment(models.Model):
         return f'{self.user}--{self.body[0:10]}'
 
     class Meta:
-        ordering = ('created', )
-
+        ordering = ('created',)
 
 
 class Favorite(models.Model):
