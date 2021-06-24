@@ -1,8 +1,9 @@
-from rest_framework import generics, permissions, status, viewsets
+from rest_framework import generics, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Q
+from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
 from products import serializers
@@ -16,78 +17,67 @@ class StandardResultsSetPagination(PageNumberPagination):
     max_page_size = 1000
 
 
-class ProductListView(generics.ListAPIView):
+class PermissionMixin:
+    def get_permissions(self):
+        if self.action == 'create':
+            permissions = [IsAdminUser, ]
+        elif self.action in ['update', 'partial_update', 'destroy']:
+            permissions = [IsAdminUser, ]
+        else:
+            permissions = []
+        return [perm() for perm in permissions]
+
+    def get_serializer_context(self):
+        return {'request': self.request, 'action': self.action}
+
+
+class ProductListView(PermissionMixin, viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = serializers.ProductSerializer
     pagination_class = StandardResultsSetPagination
     filter_backends = [DjangoFilterBackend]
     filter_fields = ('title', 'price', 'date')
 
-    @action(detail=True, methods=['post'])
-    def favorite(self, request, pk=None):
-        product = self.get_object()
-        obj, created = Favorite.objects.get_or_create(user=request.user.CustomUser, product=product)
-        if not created:
-            obj.favorite = not obj.favorite
-            obj.save()
-        added_removed = 'added' if obj.favorite else 'removed'
-        return Response('Successfully {} favorite'.format(added_removed), status=status.HTTP_200_OK)
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        search = self.request.query_params.get('search', '')
+        if search:
+            queryset = queryset.filter(
+                Q(title__icontains=search) | Q(price__icontains=search) | Q(date__icontains=search))
+        return queryset
 
     @action(detail=True, methods=['post'])
     def like(self, request, pk=None):
         product = self.get_object()
-        obj, created = Like.objects.get_or_create(owner=request.user.CustomUser, product=product)
+        obj, created = Like.objects.get_or_create(owner=request.user, product=product)
         if not created:
             obj.like = not obj.like
             obj.save()
-        liked_or_unliked = 'liked' if obj.like else 'unliked'
+        liked_or_unliked = 'unliked' if obj.like else 'liked'
         return Response('Successfully {} product'.format(liked_or_unliked), status=status.HTTP_200_OK)
 
-
-class ProductCreateView(generics.CreateAPIView):
-    queryset = Product.objects.all()
-    serializer_class = serializers.ProductSerializer
-    permission_classes = (permissions.IsAdminUser,)
-
-
-class ProductRetrieveView(generics.RetrieveAPIView):
-    queryset = Product.objects.all()
-    serializer_class = serializers.ProductSerializer
-
-
-class ProductDestroyView(generics.DestroyAPIView):
-    queryset = Product.objects.all()
-    serializer_class = serializers.ProductSerializer
-    permission_classes = (permissions.IsAdminUser,)
-
-
-class ProductUpdateView(generics.UpdateAPIView):
-    queryset = Product.objects.all()
-    serializer_class = serializers.ProductSerializer
-    permission_classes = (permissions.IsAdminUser,)
-
-
-class ProductSearchFilterView(generics.ListAPIView):
-    queryset = Product.objects.all()
-    serializer_class = serializers.ProductSerializer
-
-    def get_queryset(self):
-        query = self.request.GET.get('q')
-        object_list = Product.objects.filter(
-                Q(title__icontains=query) | Q(price__icontains=query) | Q(date__icontains=query)
-            )
-        return object_list
+    @action(detail=True, methods=['post'])
+    def favorite(self, request, pk=None):
+        product = self.get_object()
+        obj, created = Favorite.objects.get_or_create(user=request.user, product=product)
+        if not created:
+            obj.favorite = not obj.favorite
+            print(obj.favorite)
+            obj.save()
+        added_removed = 'added' if obj.favorite else 'removed'
+        return Response('Successfully {} favorite'.format(added_removed), status=status.HTTP_200_OK)
 
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
+
 class FavoriteListView(generics.ListAPIView):
     queryset = Favorite.objects.all()
     serializer_class = FavoriteSerializer
 
     def get_queryset(self):
-        qs = self.request.user.profile_customer
+        qs = self.request.user
         queryset = Favorite.objects.filter(user=qs, favorite=True)
         return queryset

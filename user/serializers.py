@@ -4,14 +4,13 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 CustomUser = get_user_model()
 
+
 class RegisterApiSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(min_length=8, write_only=True, required=True)
 
     class Meta:
         model = CustomUser
         fields = ('email', 'password', 'password2')
-
-
 
     def validate(self, attrs):
         password2 = attrs.pop('password2')
@@ -25,6 +24,7 @@ class RegisterApiSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = CustomUser.objects.create_user(**validated_data)
         return user
+
 
 class LoginSerializer(TokenObtainPairSerializer):
     password = serializers.CharField(min_length=6, write_only=True)

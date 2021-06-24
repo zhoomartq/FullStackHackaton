@@ -41,12 +41,9 @@ class LoginApiView(TokenObtainPairView):
 
 
 class ForgotPassword(APIView):
-    def get(self, request, email):
-        print("1", request)
-        # email = request.query_params.get('email')
-        print("2", email)
+    def get(self, request):
+        email = request.query_params.get('email')
         user = get_object_or_404(CustomUser, email=email)
-        print(user)
         user.is_active = False
         user.create_activation_code()
         user.save()
