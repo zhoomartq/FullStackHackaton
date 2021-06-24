@@ -1,29 +1,7 @@
 from rest_framework import viewsets
-
-from . import permissions
 from .models import Cart
-from .permissions import IsOwnerOrReadOnly, IsCustomerPermission, IsAuthorPermission
+from .permissions import IsCustomerPermission, IsAuthorPermission
 from .serializers import CartSerializer
-from rest_framework import permissions
-
-
-
-
-# class CartViewSet(viewsets.ModelViewSet):
-#     queryset = Cart.objects.all().order_by('-id')
-#     serializer_class = CartSerializer
-#     permission_classes = (
-#         permissions.IsAuthenticatedOrReadOnly,
-#         IsOwnerOrReadOnly
-#     )
-#
-#     def get_queryset(self):
-#         user = self.request.user.id
-#         queryset = self.queryset.filter(user=user)
-#         return queryset
-#
-#     def perform_create(self, serializer):
-#         serializer.save(user=self.request.user.id)
 
 
 

@@ -8,7 +8,7 @@ from rest_framework import permissions
 from rest_framework.routers import DefaultRouter
 
 from cart.views import CartViewSet
-from products.views import CommentViewSet
+from products.views import CommentViewSet, ProductListView
 
 schema_view = get_schema_view(
     info=openapi.Info(
@@ -26,6 +26,7 @@ schema_view = get_schema_view(
 router = DefaultRouter()
 router.register('comment', CommentViewSet)
 router.register('cart', CartViewSet)
+router.register('products', ProductListView)
 
 urlpatterns = [
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
@@ -45,5 +46,3 @@ urlpatterns += static(
 urlpatterns += static(
      settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
 )
-
-
