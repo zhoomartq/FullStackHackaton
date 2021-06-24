@@ -68,14 +68,3 @@ class FavoriteSerializer(serializers.ModelSerializer):
         representation = super(FavoriteSerializer, self).to_representation(instance)
         representation['user'] = instance.user.email
         return representation
-
-class LikeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Like
-        fields = ('owner',)
-
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        representation['owner'] = instance.owner.email
-        return representation
-
