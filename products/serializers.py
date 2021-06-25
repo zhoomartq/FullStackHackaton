@@ -2,8 +2,6 @@ from rest_framework import serializers
 
 from products.models import Product, Comment, Favorite, Like
 
-
-
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like

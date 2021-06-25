@@ -3,6 +3,7 @@ from django.db import models
 from user.models import CustomUser
 
 
+
 class Product(models.Model):
     title = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=10, decimal_places=2)
