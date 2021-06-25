@@ -51,7 +51,7 @@ class ProductSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ('id', 'product', 'body',)
+        fields = ('id', 'body',)
 
     def create(self, validated_data):
         request = self.context.get('request')
