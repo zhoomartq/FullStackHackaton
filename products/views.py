@@ -3,18 +3,29 @@ from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Q
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, AllowAny
 from rest_framework.response import Response
 
 from products import serializers
-from products.models import Product, Favorite, Comment, Like
-from products.serializers import CommentSerializer, FavoriteSerializer
+from products.models import Product, Favorite, Comment, Like, Category
+from products.serializers import CommentSerializer, FavoriteSerializer, CategoryListSerializer, CategoryDetailSerializer
 
 
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 5
     page_size_query_param = 'page_size'
     max_page_size = 1000
+
+
+class CategoryListView(generics.ListAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategoryListSerializer
+    permission_classes = [AllowAny, ]
+
+class CategoryDetailView(generics.RetrieveAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategoryDetailSerializer
+
 
 
 class PermissionMixin:
