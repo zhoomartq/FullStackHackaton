@@ -10,3 +10,4 @@ urlpatterns = [
     path('forgot_password/', ForgotPassword.as_view()),
     path('forgot_password_complete/', ForgotPasswordComplete.as_view()),
 ]
+

@@ -6,8 +6,7 @@ from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from . import serializers
-from user.send_mail import send_confirmation_email, send_activation_code
-from .serializers import CreateNewPasswordSerializer
+from user.send_mail import send_confirmation_email 
 
 CustomUser = get_user_model()
 
@@ -40,6 +39,7 @@ class LoginApiView(TokenObtainPairView):
     serializer_class = serializers.LoginSerializer
 
 
+    
 class ForgotPassword(APIView):
     def get(self, request):
         email = request.query_params.get('email')
@@ -59,3 +59,4 @@ class ForgotPasswordComplete(APIView):
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response('Вы успешно восстановили пароль', status=200)
+

@@ -25,4 +25,4 @@ def send_activation_code(user):
         'test@my_project.com',
         [to_email],
         fail_silently=False,
-    )
+)
