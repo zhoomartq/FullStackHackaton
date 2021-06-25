@@ -17,8 +17,6 @@ class CategoryDetailSerializer(serializers.ModelSerializer):
         representation = super(CategoryDetailSerializer, self).to_representation(instance)
         return representation
 
-
-
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like

@@ -3,6 +3,7 @@ from django.db import models
 from user.models import CustomUser
 
 
+
 class Category(models.Model):
     slug = models.SlugField(primary_key=True, max_length=50)
     name = models.CharField(max_length=250)
@@ -22,6 +23,7 @@ class Category(models.Model):
         if self.children:
             return self.children.all()
         return False
+
 
 class Product(models.Model):
     title = models.CharField(max_length=255)
