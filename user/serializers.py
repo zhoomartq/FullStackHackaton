@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model, authenticate  # нашего юзера Возвращает
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-
+from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 
 CustomUser = get_user_model()
 
@@ -43,8 +43,26 @@ class LoginSerializer(TokenObtainPairSerializer):
         return attrs
 
 
-<<<<<<< HEAD
-=======
+class LogoutSerializer(serializers.Serializer):
+    refresh = serializers.CharField()
+
+    default_error_messages = {
+        'bad_token': ('Token is expired or invalid')
+    }
+
+    def validate(self, attrs):
+        self.token = attrs['refresh']
+        return attrs
+
+    def save(self, **kwargs):
+        try:
+            RefreshToken(self.token).blacklist()
+        except TokenError:
+            self.fail('bad_token')
+
+
+
+
 class CreateNewPasswordSerializer(serializers.Serializer):
     email = serializers.CharField(max_length=150, required=True)
     activation_code = serializers.CharField(max_length=100, min_length=6, required=True)
@@ -83,4 +101,4 @@ class CreateNewPasswordSerializer(serializers.Serializer):
         user.save()
         return user
 
->>>>>>> 9d90a02bab683a1ae2a7b952301031832d4bae77
+

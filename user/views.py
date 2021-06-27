@@ -1,12 +1,12 @@
-from rest_framework import status
-from rest_framework.generics import get_object_or_404
+from rest_framework import status, generics, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from . import serializers
-from user.send_mail import send_confirmation_email 
+from user.send_mail import send_confirmation_email, send_activation_code
+from .serializers import CreateNewPasswordSerializer, LogoutSerializer
 
 CustomUser = get_user_model()
 
@@ -35,12 +35,21 @@ class ActivationView(APIView):
             return Response({'msg': 'Link expired'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class LoginApiView(TokenObtainPairView):
+class LoginAPIView(TokenObtainPairView):
     serializer_class = serializers.LoginSerializer
 
+class LogoutAPIView(generics.GenericAPIView):
+    serializer_class = LogoutSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+    
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
 
-<<<<<<< HEAD
-=======
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
     
 class ForgotPassword(APIView):
     def get(self, request):
@@ -61,5 +70,4 @@ class ForgotPasswordComplete(APIView):
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response('Вы успешно восстановили пароль', status=200)
->>>>>>> 9d90a02bab683a1ae2a7b952301031832d4bae77
 
