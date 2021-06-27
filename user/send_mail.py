@@ -15,3 +15,14 @@ def send_confirmation_email(user):
     )
 
 
+def send_activation_code(user):
+    activation_url = f'{user.activation_code}'
+    message = f"""Restore password use code: {activation_url}"""
+    to_email = user.email
+    send_mail(
+        'Активация аккаунта',
+        message,
+        'test@my_project.com',
+        [to_email],
+        fail_silently=False,
+)
