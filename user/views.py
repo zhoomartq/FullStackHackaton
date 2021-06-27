@@ -40,21 +40,4 @@ class LoginApiView(TokenObtainPairView):
     serializer_class = serializers.LoginSerializer
 
 
-# class ForgotPassword(APIView):
-#
-#     def get(self, request):
-#         email = request.query_params.get('email')
-#         user = get_object_or_404(CustomUser, email=email)
-#         user.is_active = False
-#         user.create_activation_code()
-#         user.save()
-#         send_activation_code.delay(user.email, user.activation_code)
-#         return Response('We sent a letter', status=200)
-#
-#
-# class ForgotPasswordComplete(APIView):
-#     def post(self, request):
-#         serializer = CreateNewPasswordSerializer(data=request.data)
-#         if serializer.is_valid(raise_exception=True):
-#             serializer.save()
-#             return Response('You have successfully recovered your password', status=200)
+

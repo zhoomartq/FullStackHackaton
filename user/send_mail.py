@@ -14,15 +14,4 @@ def send_confirmation_email(user):
         fail_silently=False,
     )
 
-# @shared_task
-# def send_activation_code(email, activation_code):
-#     activation_url = f'{activation_code}'
-#     message = f"""Restore password use code: {activation_url}"""
-#     # to_email = user.email
-#     send_mail(
-#         'Account activation',
-#         message,
-#         'test@my_project.com',
-#         [email, ],
-#     )
 
