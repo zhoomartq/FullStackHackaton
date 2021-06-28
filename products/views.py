@@ -64,7 +64,7 @@ class ProductListView(PermissionMixin, viewsets.ModelViewSet):
         if not created:
             obj.like = not obj.like
             obj.save()
-        liked_or_unliked = 'unliked' if obj.like else 'liked'
+        liked_or_unliked = 'liked' if obj.like else 'unliked'
         return Response('Successfully {} product'.format(liked_or_unliked), status=status.HTTP_200_OK)
 
     @action(detail=True, methods=['post'])

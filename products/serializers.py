@@ -32,7 +32,7 @@ class ProductSerializer(serializers.ModelSerializer):
     likes = LikeSerializer(many=True, read_only=True)
     class Meta:
         model = Product
-        fields = ('title', 'description', 'price', 'image', 'date', 'likes',)
+        fields = ('id', 'title', 'description', 'price', 'image', 'date', 'likes',)
 
     def to_representation(self, instance):
         representation = super(ProductSerializer, self).to_representation(instance)
