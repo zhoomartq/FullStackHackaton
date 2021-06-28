@@ -1,12 +1,13 @@
-from rest_framework import status, generics, permissions
+from rest_framework import status,  permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth import get_user_model
+from django.contrib.auth.views import LogoutView
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from . import serializers
 from user.send_mail import send_confirmation_email, send_activation_code
-from .serializers import CreateNewPasswordSerializer, LogoutSerializer
+from .serializers import CreateNewPasswordSerializer
 
 CustomUser = get_user_model()
 
@@ -38,16 +39,10 @@ class ActivationView(APIView):
 class LoginAPIView(TokenObtainPairView):
     serializer_class = serializers.LoginSerializer
 
-class LogoutAPIView(generics.GenericAPIView):
-    serializer_class = LogoutSerializer
+class LogoutAPIView(LogoutView):
     permission_classes = (permissions.IsAuthenticated,)
     
-    def post(self, request):
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
 
-        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
     
