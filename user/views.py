@@ -39,9 +39,7 @@ class ActivationView(APIView):
 class LoginAPIView(TokenObtainPairView):
     serializer_class = serializers.LoginSerializer
 
-class LogoutAPIView(LogoutView):
-    permission_classes = (permissions.IsAuthenticated,)
-    
+
 
 
 
