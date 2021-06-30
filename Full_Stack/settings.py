@@ -34,7 +34,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-   
     'rest_framework',
     'drf_yasg',
     'corsheaders',
@@ -84,7 +83,7 @@ WSGI_APPLICATION = 'Full_Stack.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'ticketshop',
+        'NAME': 'ourshop',
         'USER': 'fanta',
         'PASSWORD': 'fantaramm22',
         'HOST': 'localhost',
