@@ -30,9 +30,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'rest_framework_simplejwt.token_blacklist',
-
-
     'rest_framework',
     'drf_yasg',
     'corsheaders',
@@ -41,6 +38,7 @@ INSTALLED_APPS = [
     'user',
     'products',
     'cart',
+    'social_auth',
 ]
 
 MIDDLEWARE = [
@@ -95,6 +93,15 @@ EMAIL_PORT = config('EMAIL_PORT')
 EMAIL_USE_TLS = True
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+
+SECRET_KEY=config('SECRET_KEY')
+SOCIAL_SECRET=config('SOCIAL_SECRET')
+GOOGLE_CLIENT_ID = config('GOOGLE_CLIENT_ID')
+GOOGLE_CLIENT_SECRET = config('GOOGLE_CLIENT_SECRET')
+TWITTER_API_KEY=config('TWITTER_API_KEY')
+TWITTER_CONSUMER_SECRET=config('TWITTER_CONSUMER_SECRET')
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -185,3 +192,4 @@ CORS_ALLOW_CREDENTIALS = True
 
 #
 # CELERY_BROKER_URL = 'redis://localhost:6379'
+

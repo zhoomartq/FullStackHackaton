@@ -6,7 +6,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 
 from . import serializers
 from user.send_mail import send_confirmation_email, send_activation_code
-from .serializers import CreateNewPasswordSerializer, LogoutSerializer
+from .serializers import CreateNewPasswordSerializer
 
 CustomUser = get_user_model()
 
@@ -23,6 +23,7 @@ class RegisterAPIView(APIView):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
+
 class ActivationView(APIView):
     def get(self, request, activation_code):
         try:
@@ -35,22 +36,12 @@ class ActivationView(APIView):
             return Response({'msg': 'Link expired'}, status=status.HTTP_400_BAD_REQUEST)
 
 
+
 class LoginAPIView(TokenObtainPairView):
     serializer_class = serializers.LoginSerializer
 
-class LogoutAPIView(generics.GenericAPIView):
-    serializer_class = LogoutSerializer
-    permission_classes = (permissions.IsAuthenticated,)
-    
-    def post(self, request):
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-    
 class ForgotPassword(APIView):
     def get(self, request):
         email = request.query_params.get('email')
@@ -63,6 +54,8 @@ class ForgotPassword(APIView):
             return Response('Вам отправлено письмо', status=200)
         except CustomUser.DoesNotExist:
             return Response({'msg': 'User doesnt exist'}, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 class ForgotPasswordComplete(APIView):
     def post(self, request):

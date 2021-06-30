@@ -43,26 +43,6 @@ class LoginSerializer(TokenObtainPairSerializer):
         return attrs
 
 
-class LogoutSerializer(serializers.Serializer):
-    refresh = serializers.CharField()
-
-    default_error_messages = {
-        'bad_token': ('Token is expired or invalid')
-    }
-
-    def validate(self, attrs):
-        self.token = attrs['refresh']
-        return attrs
-
-    def save(self, **kwargs):
-        try:
-            RefreshToken(self.token).blacklist()
-        except TokenError:
-            self.fail('bad_token')
-
-
-
-
 class CreateNewPasswordSerializer(serializers.Serializer):
     email = serializers.CharField(max_length=150, required=True)
     activation_code = serializers.CharField(max_length=100, min_length=6, required=True)
