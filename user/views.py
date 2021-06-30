@@ -1,7 +1,8 @@
-from rest_framework import status, generics, permissions
+from rest_framework import status,  permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth import get_user_model
+from django.contrib.auth.views import LogoutView
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from . import serializers
