@@ -10,3 +10,15 @@ redis
 requests
 django-filter
 django-cors-headers
+google-api-core==1.22.2
+google-api-python-client==1.12.1
+google-auth==1.21.2
+google-auth-httplib2==0.0.4
+googleapis-common-protos==1.52.0
+python-twitter==3.5
+oauthlib==3.1.0
+httplib2==0.18.1
+facebook-sdk==3.1.0
+telebot
+python-telegram-bot
+

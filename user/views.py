@@ -24,6 +24,7 @@ class RegisterAPIView(APIView):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
+
 class ActivationView(APIView):
     def get(self, request, activation_code):
         try:
@@ -36,9 +37,9 @@ class ActivationView(APIView):
             return Response({'msg': 'Link expired'}, status=status.HTTP_400_BAD_REQUEST)
 
 
+
 class LoginAPIView(TokenObtainPairView):
     serializer_class = serializers.LoginSerializer
-
 
 
 
@@ -55,6 +56,8 @@ class ForgotPassword(APIView):
             return Response('Вам отправлено письмо', status=200)
         except CustomUser.DoesNotExist:
             return Response({'msg': 'User doesnt exist'}, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 class ForgotPasswordComplete(APIView):
     def post(self, request):
