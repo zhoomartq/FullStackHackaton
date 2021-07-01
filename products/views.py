@@ -7,8 +7,8 @@ from rest_framework.permissions import IsAdminUser, AllowAny
 from rest_framework.response import Response
 
 from products import serializers
-from products.models import Product, Favorite, Comment, Like, Category
-from products.serializers import CommentSerializer, FavoriteSerializer, CategoryListSerializer, CategoryDetailSerializer
+from products.models import Product, Favorite, Comment, Like
+from products.serializers import CommentSerializer, FavoriteSerializer
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -17,14 +17,14 @@ class StandardResultsSetPagination(PageNumberPagination):
     max_page_size = 1000
 
 
-class CategoryListView(generics.ListAPIView):
-    queryset = Category.objects.all()
-    serializer_class = CategoryListSerializer
-    permission_classes = [AllowAny, ]
-
-class CategoryDetailView(generics.RetrieveAPIView):
-    queryset = Category.objects.all()
-    serializer_class = CategoryDetailSerializer
+# class CategoryListView(generics.ListAPIView):
+#     queryset = Category.objects.all()
+#     serializer_class = CategoryListSerializer
+#     permission_classes = [AllowAny, ]
+#
+# class CategoryDetailView(generics.RetrieveAPIView):
+#     queryset = Category.objects.all()
+#     serializer_class = CategoryDetailSerializer
 
 
 
@@ -47,7 +47,7 @@ class ProductListView(PermissionMixin, viewsets.ModelViewSet):
     serializer_class = serializers.ProductSerializer
     pagination_class = StandardResultsSetPagination
     filter_backends = [DjangoFilterBackend]
-    filter_fields = ('title', 'price', 'date')
+    filter_fields = ('title', 'price')
 
     def get_queryset(self):
         queryset = super().get_queryset()
