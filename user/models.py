@@ -2,6 +2,11 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from rest_framework_simplejwt.tokens import RefreshToken
+
+AUTH_PROVIDERS = {'facebook':'facebook', 'google':'google', 'twitter':'twitter', 'email':'email'}
+
+
 
 class UserManager(BaseUserManager):
     use_in_migrations = True
@@ -46,6 +51,8 @@ class CustomUser(AbstractUser):
             'Unselect this instead of deleting accounts.'
         ),
     )
+    auth_provider = models.CharField(max_length=255, blank=True, null=False, default=AUTH_PROVIDERS.get('email'))
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
@@ -63,5 +70,13 @@ class CustomUser(AbstractUser):
         self.is_active = True
         self.activation_code = ''
         self.save(update_fields=['is_active', 'activation_code'])
+
+    def tokens(self):
+        refresh = RefreshToken.for_user(self)
+        return {
+            'refresh': str(refresh),
+            'access': str(refresh.access_token)
+        }
+
 
 

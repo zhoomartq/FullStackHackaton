@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+
     'rest_framework',
     'drf_yasg',
     'corsheaders',
@@ -42,6 +43,7 @@ INSTALLED_APPS = [
     'user',
     'products',
     'cart',
+    'social_auth',
 ]
 
 MIDDLEWARE = [
@@ -92,6 +94,14 @@ DATABASES = {
 }
 
 AUTH_USER_MODEL = 'user.CustomUser'
+
+
+
+SECRET_KEY='303017968174724'
+SOCIAL_SECRET='c14a23d061c4c99d4288f81d287b38f6'
+GOOGLE_CLIENT_ID = '407408718192.apps.googleusercontent.com'
+GOOGLE_CLIENT_SECRET = 'QS8Rlwbyb7MazQ9PGSKRg47-'
+
 
 
 
@@ -196,3 +206,4 @@ CORS_ALLOW_CREDENTIALS = True
 
 #
 # CELERY_BROKER_URL = 'redis://localhost:6379'
+

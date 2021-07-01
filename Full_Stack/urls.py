@@ -8,7 +8,7 @@ from rest_framework import permissions
 from rest_framework.routers import DefaultRouter
 
 from cart.views import CartViewSet
-from products.views import CommentViewSet, ProductListView
+from products.views import CommentViewSet, ProductListView, chat
 
 schema_view = get_schema_view(
     info=openapi.Info(
@@ -29,11 +29,16 @@ router.register('cart', CartViewSet)
 router.register('products', ProductListView)
 
 urlpatterns = [
+    re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
+    path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('admin/', admin.site.urls),
     path('api/v1/docs/', schema_view.with_ui()),
     path('api/v1/products/', include('products.urls')),
     path('api/v1/accounts/', include('user.urls'),),
     path('api/v1/', include(router.urls)),
+    path('social_auth/', include(('social_auth.urls', 'social_auth'), namespace="social_auth")),
+    path('api/v1/chat/', chat),
 ]
 
 

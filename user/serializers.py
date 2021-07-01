@@ -43,8 +43,6 @@ class LoginSerializer(TokenObtainPairSerializer):
         return attrs
 
 
-
-
 class CreateNewPasswordSerializer(serializers.Serializer):
     email = serializers.CharField(max_length=150, required=True)
     activation_code = serializers.CharField(max_length=100, min_length=6, required=True)
