@@ -10,6 +10,8 @@ from products import serializers
 from products.models import Product, Favorite, Comment, Like
 from products.serializers import CommentSerializer, FavoriteSerializer
 
+from django.shortcuts import redirect
+from rest_framework.decorators import api_view
 
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 5
@@ -17,14 +19,8 @@ class StandardResultsSetPagination(PageNumberPagination):
     max_page_size = 1000
 
 
-# class CategoryListView(generics.ListAPIView):
-#     queryset = Category.objects.all()
-#     serializer_class = CategoryListSerializer
-#     permission_classes = [AllowAny, ]
-#
-# class CategoryDetailView(generics.RetrieveAPIView):
-#     queryset = Category.objects.all()
-#     serializer_class = CategoryDetailSerializer
+
+
 
 
 
@@ -64,7 +60,7 @@ class ProductListView(PermissionMixin, viewsets.ModelViewSet):
         if not created:
             obj.like = not obj.like
             obj.save()
-        liked_or_unliked = 'unliked' if obj.like else 'liked'
+        liked_or_unliked = 'liked' if obj.like else 'unliked'
         return Response('Successfully {} product'.format(liked_or_unliked), status=status.HTTP_200_OK)
 
     @action(detail=True, methods=['post'])
@@ -92,3 +88,9 @@ class FavoriteListView(generics.ListAPIView):
         qs = self.request.user
         queryset = Favorite.objects.filter(user=qs, favorite=True)
         return queryset
+
+
+@api_view(['GET'])
+def chat(request):
+    url = 'http://5132ac9ec7be.ngrok.io/api/v1/chat/lobby/'
+    return redirect(url)

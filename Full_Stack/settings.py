@@ -1,7 +1,7 @@
 import os
 from datetime import timedelta
 from pathlib import Path
-
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 from decouple import config
 
@@ -12,12 +12,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = 'django-insecure-4ijatv*icf(2caa&6bg(u1dg-$q0pgt^9v*u%tilct5qx^$nx+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', cast=bool)
+DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+
+ALLOWED_HOSTS = ['92.245.126.22', 'localhost', '127.0.0.1'] 
+
+
+
 
 
 # Application definition
@@ -82,27 +86,33 @@ WSGI_APPLICATION = 'Full_Stack.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'ourshop',
+        'USER': 'fanta',
+        'PASSWORD': 'fantaramm22',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
 AUTH_USER_MODEL = 'user.CustomUser'
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = config('EMAIL_PORT')
-EMAIL_USE_TLS = True
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
-EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 
-FB_SECRET_KEY = config('SECRET_KEY')
-SOCIAL_SECRET = config('SOCIAL_SECRET')
-GOOGLE_CLIENT_ID = config('GOOGLE_CLIENT_ID')
-GOOGLE_CLIENT_SECRET = config('GOOGLE_CLIENT_SECRET')
-TWITTER_API_KEY = config('TWITTER_API_KEY')
-TWITTER_CONSUMER_SECRET = config('TWITTER_CONSUMER_SECRET')
+
+# FB_SECRET_KEY = config('SECRET_KEY')
+# SOCIAL_SECRET = config('SOCIAL_SECRET')
+# GOOGLE_CLIENT_ID = config('GOOGLE_CLIENT_ID')
+# GOOGLE_CLIENT_SECRET = config('GOOGLE_CLIENT_SECRET')
+# TWITTER_API_KEY = config('TWITTER_API_KEY')
+# TWITTER_CONSUMER_SECRET = config('TWITTER_CONSUMER_SECRET')
+
+SECRET_KEY='303017968174724'
+SOCIAL_SECRET='c14a23d061c4c99d4288f81d287b38f6'
+GOOGLE_CLIENT_ID = '407408718192.apps.googleusercontent.com'
+GOOGLE_CLIENT_SECRET = 'QS8Rlwbyb7MazQ9PGSKRg47-'
+
+
 
 
 
@@ -143,7 +153,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -151,6 +165,14 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_PASSWORD = config
+EMAIL_HOST_USER = config
 
 
 REST_FRAMEWORK = {
@@ -165,8 +187,8 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=50),
+    'REFRESH_TOKEN_LIFETIME': timedelta(minutes=60),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
 

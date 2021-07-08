@@ -8,7 +8,7 @@ from rest_framework import permissions
 from rest_framework.routers import DefaultRouter
 
 from cart.views import CartViewSet
-from products.views import CommentViewSet, ProductListView
+from products.views import CommentViewSet, ProductListView, chat
 
 schema_view = get_schema_view(
     info=openapi.Info(
@@ -38,6 +38,7 @@ urlpatterns = [
     path('api/v1/accounts/', include('user.urls'),),
     path('api/v1/', include(router.urls)),
     path('social_auth/', include(('social_auth.urls', 'social_auth'), namespace="social_auth")),
+    path('api/v1/chat/', chat),
 ]
 
 
