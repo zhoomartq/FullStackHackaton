@@ -43,6 +43,7 @@ class LoginAPIView(TokenObtainPairView):
 
 
 
+
 class ForgotPassword(APIView):
     def get(self, request):
         email = request.query_params.get('email')
@@ -64,4 +65,5 @@ class ForgotPasswordComplete(APIView):
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response('Вы успешно восстановили пароль', status=200)
+
 

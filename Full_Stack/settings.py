@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     'user',
     'products',
     'cart',
+
     'social_auth',
+
 ]
 
 MIDDLEWARE = [
@@ -97,10 +99,19 @@ AUTH_USER_MODEL = 'user.CustomUser'
 
 
 
+
+# FB_SECRET_KEY = config('SECRET_KEY')
+# SOCIAL_SECRET = config('SOCIAL_SECRET')
+# GOOGLE_CLIENT_ID = config('GOOGLE_CLIENT_ID')
+# GOOGLE_CLIENT_SECRET = config('GOOGLE_CLIENT_SECRET')
+# TWITTER_API_KEY = config('TWITTER_API_KEY')
+# TWITTER_CONSUMER_SECRET = config('TWITTER_CONSUMER_SECRET')
+
 SECRET_KEY='303017968174724'
 SOCIAL_SECRET='c14a23d061c4c99d4288f81d287b38f6'
 GOOGLE_CLIENT_ID = '407408718192.apps.googleusercontent.com'
 GOOGLE_CLIENT_SECRET = 'QS8Rlwbyb7MazQ9PGSKRg47-'
+
 
 
 
@@ -160,8 +171,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_PASSWORD = 'Bossi.ua123'
-EMAIL_HOST_USER = '2004.02010@manas.edu.kg'
+EMAIL_HOST_PASSWORD = config
+EMAIL_HOST_USER = config
 
 
 REST_FRAMEWORK = {
