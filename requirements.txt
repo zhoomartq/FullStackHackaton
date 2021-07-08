@@ -19,6 +19,5 @@ python-twitter==3.5
 oauthlib==3.1.0
 httplib2==0.18.1
 facebook-sdk==3.1.0
-telebot
-python-telegram-bot
+
 
